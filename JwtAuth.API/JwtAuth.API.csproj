@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>7697bfda-7e3c-42df-8401-3c3d3c55f06b</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.24.0" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.24.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="APIModels\" />
+    <None Remove="Services\" />
+    <None Remove="Microsoft.IdentityModel.Tokens" />
+    <None Remove="System.IdentityModel.Tokens.Jwt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="APIModels\" />
+    <Folder Include="Services\" />
+  </ItemGroup>
+</Project>
