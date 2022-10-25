@@ -4,3 +4,6 @@
 JwtAuth.API/appsettings.Development.json
 JwtAuth.API/bin/
 JwtAuth.API/obj/
+
+Auth.Storage/obj/
+Auth.Storage/bin/

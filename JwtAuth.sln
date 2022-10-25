@@ -5,6 +5,8 @@ VisualStudioVersion = 25.0.1703.7
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JwtAuth.API", "JwtAuth.API\JwtAuth.API.csproj", "{2FAC8D28-AB0D-4A7A-8090-8DE8D2A64684}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Auth.Storage", "Auth.Storage\Auth.Storage.csproj", "{11E04F64-2A9C-4E95-A603-65185880AA45}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{2FAC8D28-AB0D-4A7A-8090-8DE8D2A64684}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2FAC8D28-AB0D-4A7A-8090-8DE8D2A64684}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2FAC8D28-AB0D-4A7A-8090-8DE8D2A64684}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11E04F64-2A9C-4E95-A603-65185880AA45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11E04F64-2A9C-4E95-A603-65185880AA45}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11E04F64-2A9C-4E95-A603-65185880AA45}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11E04F64-2A9C-4E95-A603-65185880AA45}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
