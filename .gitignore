@@ -7,3 +7,6 @@ JwtAuth.API/obj/
 
 Auth.Storage/obj/
 Auth.Storage/bin/
+
+Auth.Storage.Tests/bin/
+Auth.Storage.Tests/obj/
