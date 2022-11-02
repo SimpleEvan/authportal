@@ -6,4 +6,24 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="Microsoft.EntityFrameworkCore" />
+    <None Remove="Entities\" />
+    <None Remove="Enums\" />
+    <None Remove="Microsoft.EntityFrameworkCore.Cosmos" />
+    <None Remove="Context\" />
+    <None Remove="Dependency\" />
+    <None Remove="Microsoft.Extensions.Configuration" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.10" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Cosmos" Version="6.0.10" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Entities\" />
+    <Folder Include="Enums\" />
+    <Folder Include="Context\" />
+    <Folder Include="Dependency\" />
+  </ItemGroup>
 </Project>
