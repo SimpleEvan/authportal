@@ -1,6 +1,9 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Auth.Storage.Context;
+using Auth.Storage.Entities;
+using Auth.Storage.Enums;
 using JwtAuth.API.APIModels;
 using Microsoft.IdentityModel.Tokens;
 
@@ -15,11 +18,31 @@ namespace JwtAuth.API.Services
 
     public class AuthService: IAuthService
     {
+        private readonly AuthContext _context;
+
+        public AuthService(AuthContext context)
+        {
+            _context = context;
+        }
+
         public async Task<AuthTokenResponse> Register(UserRequest userRequest)
         {
             var hashObj = HashGenerator.CreateHash(userRequest.Password);
 
-            // store salt & hash in the db
+            await _context.AddAsync(new AuthToken
+            {
+                CreatedOn = DateTime.Now,
+                Duration = 3600,
+                Hash = hashObj.hash,
+                Salt = hashObj.salt,
+                Resource = new Resource
+                {
+                    Description = "Register auth token",
+                    Type = ResourceType.Tenant
+                }
+            });
+
+            await _context.SaveChangesAsync();
 
             return new AuthTokenResponse
             {
@@ -57,6 +80,7 @@ namespace JwtAuth.API.Services
             return new UserLoggedResponse
             {
                 UserName = userRequest.Username,
+                Token = string.Empty
             };
         }
     }
