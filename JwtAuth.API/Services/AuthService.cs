@@ -27,30 +27,38 @@ namespace JwtAuth.API.Services
 
         public async Task<AuthTokenResponse> Register(UserRequest userRequest)
         {
-            var hashObj = HashGenerator.CreateHash(userRequest.Password);
-
-            await _context.AddAsync(new AuthToken
+            try
             {
-                CreatedOn = DateTime.Now,
-                Duration = 3600,
-                Hash = hashObj.hash,
-                Salt = hashObj.salt,
-                Resource = new Resource
+                // #TODO save hash as string not byte array
+                var hashObj = HashGenerator.CreateHash(userRequest.Password);
+
+                await _context.AddAsync(new AuthToken
                 {
-                    Description = "Register auth token",
-                    Type = ResourceType.Tenant
-                }
-            });
+                    CreatedOn = DateTime.Now,
+                    Duration = 3600,
+                    Hash = hashObj.hash,
+                    Salt = hashObj.salt,
+                    Resource = new Resource
+                    {
+                        Description = "Register auth token",
+                        Type = ResourceType.Tenant
+                    }
+                });
 
-            await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync();
 
-            return new AuthTokenResponse
+                return new AuthTokenResponse
+                {
+                    UserName = userRequest.Username,
+                    CreatedOn = DateTime.Now,
+                    ExpiresAt = DateTime.Now.AddSeconds(3600),
+                    Duration = 3600
+                };
+            }
+            catch (Exception ex)
             {
-                UserName = userRequest.Username,
-                CreatedOn = DateTime.Now,
-                ExpiresAt = DateTime.Now.AddSeconds(3600),
-                Duration = 3600
-            };
+                throw new Exception(ex.Message);
+            }
         }
 
         public async Task<string> Login(UserRequest userRequest)
@@ -59,10 +67,14 @@ namespace JwtAuth.API.Services
 
             //hashObj.hash.SequenceEqual(storedHash);
 
+            //#TODO  check is hash is correct from db 
+
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, userRequest.Username)
             };
+
+            // get from keyvault
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("tokenvalue1111111"));
 

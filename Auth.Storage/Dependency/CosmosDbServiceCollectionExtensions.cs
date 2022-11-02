@@ -13,23 +13,14 @@ namespace Auth.Storage.Dependency
 
     public static class CosmosDbServiceCollectionExtensions
     {
-        private static DbContextOptions<AuthContext> AddConfig(CosmosDbSettings settings)
-        {
-            return new DbContextOptionsBuilder<AuthContext>().UseCosmos(
-             settings.Host,
-             settings.ConnectionString,
-             settings.DatabaseName).Options;
-        }
-
         public static IServiceCollection AddCosmosDbDependency(
              this IServiceCollection services, CosmosDbSettings settings)
         {
-            services.AddSingleton<AuthContext>();
-
-            services.AddSingleton<DbContext, AuthContext>((sp) =>
-            {
-                return new AuthContext(AddConfig(settings));
-            });
+            services.AddDbContext<AuthContext>(
+                options => options.UseCosmos(
+                     settings.Host,
+                     settings.ConnectionString,
+                     settings.DatabaseName));
 
             return services;
         }

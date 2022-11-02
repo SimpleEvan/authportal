@@ -11,7 +11,7 @@ builder.Services.AddSwaggerGen();
 var settings = builder.Configuration.GetSection("CosmosDbSettings").Get<CosmosDbSettings>();
 builder.Services.AddCosmosDbDependency(settings);
 
-builder.Services.AddSingleton<IAuthService, AuthService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 var app = builder.Build();
 
@@ -28,4 +28,4 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
-
+    
