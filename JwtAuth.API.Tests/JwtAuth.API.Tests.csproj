@@ -23,19 +23,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="Integration\" />
-    <None Remove="Unittests\" />
+    <None Remove="Services\" />
     <None Remove="Moq" />
-    <None Remove="Integration\DbContext\" />
-    <None Remove="Configuration\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Integration\" />
-    <Folder Include="Unittests\" />
-    <Folder Include="Integration\DbContext\" />
-    <Folder Include="Configuration\" />
+    <Folder Include="Services\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\JwtAuth.API\JwtAuth.API.csproj" />
     <ProjectReference Include="..\Auth.Storage\Auth.Storage.csproj" />
   </ItemGroup>
 </Project>

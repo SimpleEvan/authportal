@@ -6,6 +6,10 @@ JwtAuth.API/bin/
 JwtAuth.API/obj/
 JwtAuth.API/.vscode/
 
+JwtAuth.API.Tests/bin/
+JwtAuth.API.Tests/obj/
+JwtAuth.API.Tests/.vscode/
+
 Auth.Storage/obj/
 Auth.Storage/bin/
 Auth.Storage/.vscode/
@@ -13,5 +17,4 @@ Auth.Storage/.vscode/
 Auth.Storage.Tests/bin/
 Auth.Storage.Tests/obj/
 Auth.Storage.Tests/.vscode/
-
 Auth.Storage.Tests/Configuration/CosmosDbConfig.cs

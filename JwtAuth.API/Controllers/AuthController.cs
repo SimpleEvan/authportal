@@ -1,5 +1,5 @@
 ﻿using JwtAuth.API.APIModels;
-using JwtAuth.API.Services;
+using JwtAuth.API.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JwtAuth.API.Controllers;
@@ -8,10 +8,10 @@ namespace JwtAuth.API.Controllers;
 [Route("api/[controller]")]
 public class AuthController : ControllerBase
 {
-    private readonly IAuthService _authService;
+    private readonly IAuthPortalService _authService;
     private readonly ILogger<AuthController> _logger;
 
-    public AuthController(IAuthService authService, ILogger<AuthController> logger)
+    public AuthController(IAuthPortalService authService, ILogger<AuthController> logger)
     {
         _logger = logger;
         _authService = authService;
@@ -32,7 +32,13 @@ public class AuthController : ControllerBase
     [HttpPost("login")]
     public async Task<ActionResult<string>> Login(UserRequest user)
     {
-        return Ok(await _authService.Login(user));
+        var token = await _authService.Login(user);
+
+        if (token == string.Empty)
+        {
+            return BadRequest("Failed login!");
+        }
+        return Ok(token);
     }
 
     [HttpGet("logout")]

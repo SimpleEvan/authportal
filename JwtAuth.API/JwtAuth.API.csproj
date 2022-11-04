@@ -11,6 +11,8 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
     <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.25.0" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.25.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.10" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="7.0.5" />
   </ItemGroup>
 
   <ItemGroup>
@@ -18,10 +20,16 @@
     <None Remove="Services\" />
     <None Remove="Microsoft.IdentityModel.Tokens" />
     <None Remove="System.IdentityModel.Tokens.Jwt" />
+    <None Remove="Services\Interfaces\" />
+    <None Remove="Microsoft.AspNetCore.Authentication.JwtBearer" />
+    <None Remove="Swashbuckle.AspNetCore.Filters" />
+    <None Remove="Authorization\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="APIModels\" />
     <Folder Include="Services\" />
+    <Folder Include="Services\Interfaces\" />
+    <Folder Include="Authorization\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Auth.Storage\Auth.Storage.csproj">

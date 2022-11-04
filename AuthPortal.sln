@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Auth.Storage", "Auth.Storag
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Auth.Storage.Tests", "Auth.Storage.Tests\Auth.Storage.Tests.csproj", "{F01EAEB7-97CC-41A1-899E-20D5061CACC0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JwtAuth.API.Tests", "JwtAuth.API.Tests\JwtAuth.API.Tests.csproj", "{ED5F7EFA-988A-4ED8-B7C1-20E1F20DA6AB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{F01EAEB7-97CC-41A1-899E-20D5061CACC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F01EAEB7-97CC-41A1-899E-20D5061CACC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F01EAEB7-97CC-41A1-899E-20D5061CACC0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED5F7EFA-988A-4ED8-B7C1-20E1F20DA6AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED5F7EFA-988A-4ED8-B7C1-20E1F20DA6AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED5F7EFA-988A-4ED8-B7C1-20E1F20DA6AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED5F7EFA-988A-4ED8-B7C1-20E1F20DA6AB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

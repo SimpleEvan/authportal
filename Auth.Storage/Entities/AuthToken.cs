@@ -3,6 +3,7 @@
     public class AuthToken
     {
         public Guid id { get; set; } = Guid.NewGuid();
+        public string Username { get; set; } = string.Empty;
         public Guid ResourceId { get; set; } = Guid.NewGuid();
         public Resource Resource { get; set; } = new Resource();
         public byte[] Hash { get; set; } = null!;

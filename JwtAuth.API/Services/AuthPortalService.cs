@@ -5,22 +5,17 @@ using Auth.Storage.Context;
 using Auth.Storage.Entities;
 using Auth.Storage.Enums;
 using JwtAuth.API.APIModels;
+using JwtAuth.API.Authorization;
+using JwtAuth.API.Services.Interfaces;
 using Microsoft.IdentityModel.Tokens;
 
 namespace JwtAuth.API.Services
 {
-    public interface IAuthService
-    {
-        Task<AuthTokenResponse> Register(UserRequest user);
-        Task<string> Login(UserRequest userRequest);
-        Task<UserLoggedResponse> Logout(UserRequest userRequest);
-    }
-
-    public class AuthService: IAuthService
+    public class AuthPortalService : IAuthPortalService
     {
         private readonly AuthContext _context;
 
-        public AuthService(AuthContext context)
+        public AuthPortalService(AuthContext context)
         {
             _context = context;
         }
@@ -34,6 +29,7 @@ namespace JwtAuth.API.Services
 
                 await _context.AddAsync(new AuthToken
                 {
+                    Username = userRequest.Username,
                     CreatedOn = DateTime.Now,
                     Duration = 3600,
                     Hash = hashObj.hash,
@@ -63,28 +59,37 @@ namespace JwtAuth.API.Services
 
         public async Task<string> Login(UserRequest userRequest)
         {
-            var hashObj = HashGenerator.CreateHash(userRequest.Password);
+            var user = _context.AuthTokens.SingleOrDefault(element => element.Username == userRequest.Username);
 
-            //hashObj.hash.SequenceEqual(storedHash);
-
-            //#TODO  check is hash is correct from db 
-
-            var claims = new List<Claim>
+            if (user != null)
             {
-                new Claim(ClaimTypes.Name, userRequest.Username)
-            };
+                if (!HashGenerator.VerifyPasswordHash(userRequest.Password, user.Hash, user.Salt))
+                {
+                    return string.Empty;
+                }
 
-            // get from keyvault
+                var claims = new List<Claim>
+                {   
+                    new Claim(ClaimTypes.Name, userRequest.Username),
+                    new Claim(ClaimTypes.Role, nameof(AuthorizationRoles.Dolphin))
+                };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("tokenvalue1111111"));
+                // get from keyvault
 
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("tokenvalue1111111"));
 
-            var token = new JwtSecurityToken(claims: claims, expires: DateTime.Now.AddDays(1), signingCredentials: creds);
+                var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 
-            var jwt = new JwtSecurityTokenHandler().WriteToken(token);
+                var token = new JwtSecurityToken(claims: claims, expires: DateTime.Now.AddDays(1), signingCredentials: creds);
 
-            return jwt; 
+                var jwt = new JwtSecurityTokenHandler().WriteToken(token);
+
+                return jwt;
+            }
+            else
+            {
+                return string.Empty;
+            }
         }
 
         public async Task<UserLoggedResponse> Logout(UserRequest userRequest)
