@@ -6,6 +6,6 @@ namespace JwtAuth.API.Services.Interfaces
     {
         Task<AuthTokenResponse> Register(UserRequest user);
         Task<string> Login(UserRequest userRequest);
-        Task<UserLoggedResponse> Logout(UserRequest userRequest);
+        UserLoggedResponse Logout(UserRequest userRequest);
     }
 }

@@ -1,7 +1,6 @@
 ﻿using Auth.Storage.Context;
 using Auth.Storage.Entities;
 using Auth.Storage.Enums;
-using Auth.Storage.Tests.Configuration;
 
 namespace Auth.Storage.Tests.Integration.DbContext;
 
@@ -33,7 +32,7 @@ public class InsertCosmosDb
         }
         catch (Exception ex)
         {
-            throw ex;
+            throw new Exception(ex.Message);
         }
 
         Assert.True(true);

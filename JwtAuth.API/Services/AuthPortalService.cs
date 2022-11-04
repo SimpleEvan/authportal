@@ -7,6 +7,7 @@ using Auth.Storage.Enums;
 using JwtAuth.API.APIModels;
 using JwtAuth.API.Authorization;
 using JwtAuth.API.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
 namespace JwtAuth.API.Services
@@ -59,7 +60,7 @@ namespace JwtAuth.API.Services
 
         public async Task<string> Login(UserRequest userRequest)
         {
-            var user = _context.AuthTokens.SingleOrDefault(element => element.Username == userRequest.Username);
+            var user = await _context.AuthTokens.SingleOrDefaultAsync(element => element.Username == userRequest.Username);
 
             if (user != null)
             {
@@ -92,7 +93,7 @@ namespace JwtAuth.API.Services
             }
         }
 
-        public async Task<UserLoggedResponse> Logout(UserRequest userRequest)
+        public UserLoggedResponse Logout(UserRequest userRequest)
         {
             return new UserLoggedResponse
             {

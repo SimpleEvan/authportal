@@ -1,6 +1,5 @@
 ﻿using Auth.Storage.Context;
 using Auth.Storage.Entities;
-using Auth.Storage.Tests.Configuration;
 
 namespace Auth.Storage.Tests.Integration.DbContext
 {
@@ -24,7 +23,7 @@ namespace Auth.Storage.Tests.Integration.DbContext
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw new Exception(ex.Message);
             }
 
             Assert.Equal(token?.id, id);

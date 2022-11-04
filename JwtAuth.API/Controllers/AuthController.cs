@@ -24,7 +24,7 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("refreshToken")]
-    public async Task<ActionResult<bool>> RefreshToken()
+    public ActionResult<bool> RefreshToken()
     {
         return Ok(true);
     }
@@ -42,9 +42,9 @@ public class AuthController : ControllerBase
     }
 
     [HttpGet("logout")]
-    public async Task<ActionResult<UserLoggedResponse>> Logout(UserRequest user)
+    public ActionResult<UserLoggedResponse> Logout(UserRequest user)
     {
-        return Ok(await _authService.Logout(user));
+        return Ok(_authService.Logout(user));
     }
 }
 

@@ -1,7 +1,5 @@
-﻿using System;
-using Auth.Storage.Entities;
+﻿using Auth.Storage.Entities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 
 namespace Auth.Storage.Context
 {
@@ -10,8 +8,8 @@ namespace Auth.Storage.Context
         public AuthContext(DbContextOptions<AuthContext> options)
         : base(options){}
 
-        public DbSet<AuthToken> AuthTokens { get; set; }
-        public DbSet<Resource> Resources { get; set; }
+        public DbSet<AuthToken> AuthTokens { get; set; } = null!;
+        public DbSet<Resource> Resources { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
