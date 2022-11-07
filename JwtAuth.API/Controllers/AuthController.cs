@@ -1,9 +1,13 @@
-﻿using JwtAuth.API.APIModels;
+﻿using System.Data;
+using JwtAuth.API.APIModels;
+using JwtAuth.API.Authorization;
 using JwtAuth.API.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JwtAuth.API.Controllers;
 
+[Authorize(Roles = nameof(AuthorizationRoles.Traveler))]
 [ApiController]
 [Route("api/[controller]")]
 public class AuthController : ControllerBase

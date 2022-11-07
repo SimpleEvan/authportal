@@ -8,6 +8,7 @@ using JwtAuth.API.APIModels;
 using JwtAuth.API.Authorization;
 using JwtAuth.API.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 namespace JwtAuth.API.Services
@@ -15,10 +16,12 @@ namespace JwtAuth.API.Services
     public class AuthPortalService : IAuthPortalService
     {
         private readonly AuthContext _context;
+        private readonly AuthPortalServiceOptions _options;
 
-        public AuthPortalService(AuthContext context)
+        public AuthPortalService(AuthContext context, IOptions<AuthPortalServiceOptions> options)
         {
             _context = context;
+            _options = options.Value;
         }
 
         public async Task<AuthTokenResponse> Register(UserRequest userRequest)
@@ -75,14 +78,9 @@ namespace JwtAuth.API.Services
                     new Claim(ClaimTypes.Role, nameof(AuthorizationRoles.Dolphin))
                 };
 
-                // get from keyvault
-
-                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("tokenvalue1111111"));
-
+                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.IssuerSecretKey));
                 var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
-
                 var token = new JwtSecurityToken(claims: claims, expires: DateTime.Now.AddDays(1), signingCredentials: creds);
-
                 var jwt = new JwtSecurityTokenHandler().WriteToken(token);
 
                 return jwt;

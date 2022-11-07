@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace JwtAuth.API.Controllers
 {
     [Authorize(Roles = nameof(AuthorizationRoles.Dolphin))]
+    [ApiController]
     [Route("api/[controller]")]
     public class EchoController : ControllerBase
     {

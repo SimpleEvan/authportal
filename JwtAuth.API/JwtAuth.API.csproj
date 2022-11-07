@@ -13,6 +13,9 @@
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.25.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.10" />
     <PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="7.0.5" />
+    <PackageReference Include="Azure.Security.KeyVault.Secrets" Version="4.4.0" />
+    <PackageReference Include="Azure.Identity" Version="1.7.0" />
+    <PackageReference Include="Azure.Extensions.AspNetCore.Configuration.Secrets" Version="1.2.2" />
   </ItemGroup>
 
   <ItemGroup>
@@ -24,12 +27,17 @@
     <None Remove="Microsoft.AspNetCore.Authentication.JwtBearer" />
     <None Remove="Swashbuckle.AspNetCore.Filters" />
     <None Remove="Authorization\" />
+    <None Remove="Dependency\" />
+    <None Remove="Azure.Security.KeyVault.Secrets" />
+    <None Remove="Azure.Identity" />
+    <None Remove="Azure.Extensions.AspNetCore.Configuration.Secrets" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="APIModels\" />
     <Folder Include="Services\" />
     <Folder Include="Services\Interfaces\" />
     <Folder Include="Authorization\" />
+    <Folder Include="Dependency\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Auth.Storage\Auth.Storage.csproj">

@@ -1,5 +1,7 @@
-﻿using Auth.Storage.Context;
+﻿
+using Auth.Storage.Context;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Auth.Storage.Dependency
@@ -14,13 +16,13 @@ namespace Auth.Storage.Dependency
     public static class CosmosDbServiceCollectionExtensions
     {
         public static IServiceCollection AddCosmosDbDependency(
-             this IServiceCollection services, CosmosDbSettings settings)
+             this IServiceCollection services, ConfigurationManager configuration)
         {
             services.AddDbContext<AuthContext>(
                 options => options.UseCosmos(
-                     settings.Host,
-                     settings.ConnectionString,
-                     settings.DatabaseName));
+                     configuration.GetSection("databaseHost").Value,
+                     configuration.GetSection("CosmosDbSettingsConnectionString").Value,
+                     configuration.GetSection("databaseName").Value));
 
             return services;
         }

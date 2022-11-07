@@ -1,5 +1,6 @@
 ﻿using Auth.Storage.Context;
 using Auth.Storage.Entities;
+using Auth.Storage.Tests.Configuration;
 
 namespace Auth.Storage.Tests.Integration.DbContext
 {

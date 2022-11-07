@@ -4,6 +4,7 @@ using JwtAuth.API.APIModels;
 using JwtAuth.API.Services;
 using JwtAuth.API.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Moq;
 
 namespace JwtAuth.API.Tests.Services.AuthService
@@ -12,7 +13,8 @@ namespace JwtAuth.API.Tests.Services.AuthService
     {
         private readonly IAuthPortalService _sut;
         private readonly Mock<AuthContext> _context;
-        private readonly Mock<DbSet<AuthToken>> _tokensSet; 
+        private readonly Mock<DbSet<AuthToken>> _tokensSet;
+        private readonly Mock<IOptions<AuthPortalServiceOptions>> _options;
 
         public LoginTests()
         {
@@ -20,9 +22,12 @@ namespace JwtAuth.API.Tests.Services.AuthService
 
             _tokensSet = new Mock<DbSet<AuthToken>>();
             _context = new Mock<AuthContext>();
-            _context.Setup(t => t.AuthTokens).Returns(_tokensSet.Object);
+            _options = new Mock<IOptions<AuthPortalServiceOptions>>();
 
-            _sut = new AuthPortalService(_context.Object);
+            _context.Setup(t => t.AuthTokens).Returns(_tokensSet.Object);
+            _options.Setup(o => o.Value).Returns(new AuthPortalServiceOptions { IssuerSecretKey = "top secret" });
+
+            _sut = new AuthPortalService(_context.Object, _options.Object);
         }
 
         [Fact]
