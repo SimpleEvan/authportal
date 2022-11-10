@@ -87,7 +87,8 @@ namespace JwtAuth.API.Services
                     var claims = new List<Claim>
                     {
                         new Claim(ClaimTypes.Name, userRequest.Username),
-                        new Claim(ClaimTypes.Role, nameof(AuthorizationRoles.Dolphin))
+                        new Claim(ClaimTypes.Role, nameof(AuthorizationRoles.Dolphin)),
+                        new Claim(ClaimTypes.Role, nameof(AuthorizationRoles.Traveler)),
                     };
 
                     var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.IssuerSecretKey));
@@ -119,7 +120,7 @@ namespace JwtAuth.API.Services
             {
                 var user = await _context.AuthTokens.SingleOrDefaultAsync(element => element.Username == userName);
 
-                if (user == null || !user.RefreshToken.Equals(refreshToken) || user.RefreshToken.ExpiresOn > DateTime.Now)
+                if (user == null || !user.RefreshToken.Token.Equals(refreshToken) || user.RefreshToken.ExpiresOn <= DateTime.Now)
                 {
                     return new AutRefreshTokenResponse();
                 }
@@ -146,7 +147,7 @@ namespace JwtAuth.API.Services
         {
             var user = await _context.AuthTokens.SingleOrDefaultAsync(element => element.Username == userName);
 
-            if (user == null || !user.RefreshToken.Equals(refreshToken) || user.RefreshToken.ExpiresOn > DateTime.Now)
+            if (user == null || !user.RefreshToken.Token.Equals(refreshToken) || user.RefreshToken.ExpiresOn <= DateTime.Now)
             {
                 return new UserLogoutResponse();
             }
