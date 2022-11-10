@@ -50,7 +50,7 @@ public class AuthController : ControllerBase
         {
             return BadRequest("Failed login!");
         }
-        SetRefreshToken(token.JwtToken, token.RefreshTokenExpiresOn);
+        SetRefreshToken(token.RefreshToken, token.RefreshTokenExpiresOn);
         return Ok(token.JwtToken);
     }
 
@@ -84,4 +84,4 @@ public class AuthController : ControllerBase
 
         Response.Cookies.Append("refreshToken", refreshToken, options);
     }
-}
+}       
