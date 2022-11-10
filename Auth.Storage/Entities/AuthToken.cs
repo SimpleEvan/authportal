@@ -6,9 +6,10 @@
         public string Username { get; set; } = string.Empty;
         public Guid ResourceId { get; set; } = Guid.NewGuid();
         public Resource Resource { get; set; } = new Resource();
-        public byte[] Hash { get; set; } = null!;
-        public byte[] Salt { get; set; } = null!;
-        public DateTime CreatedOn { get; set; }
+        public string Hash { get; set; } = null!;
+        public string Salt { get; set; } = null!;
+        public DateTime CreatedOn { get; } = DateTime.Now;
         public int Duration { get; set; }
+        public RefreshToken RefreshToken { get; set; } = new RefreshToken();
     }
 }

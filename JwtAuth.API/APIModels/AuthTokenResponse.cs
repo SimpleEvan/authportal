@@ -3,8 +3,8 @@
     public class AuthTokenResponse
     {
         public string UserName { get; set; } = String.Empty;
-        public DateTime CreatedOn { get; set; }
-        public DateTime ExpiresAt { get; set; }
+        public DateTime CreatedOn { get; }
+        public DateTime ExpiresAt { get; set; } = DateTime.MinValue;
         public int Duration { get; set; }
     }
 }

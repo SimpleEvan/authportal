@@ -1,5 +1,4 @@
-﻿using System.Data;
-using JwtAuth.API.APIModels;
+﻿using JwtAuth.API.APIModels;
 using JwtAuth.API.Authorization;
 using JwtAuth.API.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -21,16 +20,25 @@ public class AuthController : ControllerBase
         _authService = authService;
     }
 
-    [HttpPost("register")]
-    public async Task <ActionResult<AuthTokenResponse>> Register(UserRequest user)
-    {
-        return Ok(await _authService.Register(user));
-    }
-
     [HttpPost("refreshToken")]
-    public ActionResult<bool> RefreshToken()
+    public async Task<ActionResult> RefreshToken(string userName)
     {
-        return Ok(true);
+        var refreshCookie = Request.Cookies["refreshToken"];
+
+        if (string.IsNullOrEmpty(refreshCookie))
+        {
+            return BadRequest("Invalid refresh login!");
+        }
+
+        var token = await _authService.RecycleRefreshToken(userName, refreshCookie);
+
+        if (token.RefreshToken == string.Empty)
+        {
+            return BadRequest("Failed refresh login!");
+        }
+
+        SetRefreshToken(token.RefreshToken, token.ExpiresOn);
+        return Ok();
     }
 
     [HttpPost("login")]
@@ -38,17 +46,42 @@ public class AuthController : ControllerBase
     {
         var token = await _authService.Login(user);
 
-        if (token == string.Empty)
+        if (token.JwtToken == string.Empty)
         {
             return BadRequest("Failed login!");
         }
-        return Ok(token);
+        SetRefreshToken(token.JwtToken, token.RefreshTokenExpiresOn);
+        return Ok(token.JwtToken);
     }
 
     [HttpGet("logout")]
-    public ActionResult<UserLoggedResponse> Logout(UserRequest user)
+    public async Task<ActionResult<UserLogoutResponse>> Logout(string userName)
     {
-        return Ok(_authService.Logout(user));
+        var refreshCookie = Request.Cookies["refreshToken"];
+
+        if (string.IsNullOrEmpty(refreshCookie))
+        {
+            return BadRequest("Invalid logout!");
+        }
+
+        var logout = await _authService.Logout(userName, refreshCookie);
+
+        if (string.IsNullOrEmpty(logout.Message))
+        {
+            return BadRequest("Failed logout!");
+        }
+
+        return Ok((logout));
+    }
+
+    private void SetRefreshToken(string refreshToken, DateTime expiresOn)
+    {
+        var options = new CookieOptions
+        {
+            HttpOnly = true,
+            Expires = expiresOn
+        };
+
+        Response.Cookies.Append("refreshToken", refreshToken, options);
     }
 }
-

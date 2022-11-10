@@ -25,6 +25,10 @@ namespace JwtAuth.API.Services
                 return computedHash.SequenceEqual(passwordHash);
             }
         }
+
+        public static string GeneratedRefreshToken()
+        {
+            return Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
+        }
     }
 }
-

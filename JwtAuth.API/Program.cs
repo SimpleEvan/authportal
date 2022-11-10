@@ -2,6 +2,7 @@
 using JwtAuth.API.Dependency;
 using JwtAuth.API.Services;
 using JwtAuth.API.Services.Interfaces;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,8 +15,10 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerDependency(builder.Configuration);
 builder.Services.AddCosmosDbDependency(builder.Configuration);
 
-builder.Services.Configure<AuthPortalServiceOptions>(builder.Configuration.GetSection("AuthPortalIssuerSecretKey"));
 builder.Services.AddScoped<IAuthPortalService, AuthPortalService>();
+
+builder.Services.Configure<AuthPortalServiceOptions>(options =>
+    options.IssuerSecretKey = builder.Configuration.GetSection("AuthPortalIssuerSecretKey").Value ?? string.Empty);
 
 var app = builder.Build();
 

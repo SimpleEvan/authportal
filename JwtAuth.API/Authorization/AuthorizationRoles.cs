@@ -3,6 +3,7 @@
     public enum AuthorizationRoles
     {
         Dolphin,
-        Traveler
+        Traveler,
+        PortalOwner
     }
 }

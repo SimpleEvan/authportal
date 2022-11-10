@@ -43,7 +43,7 @@ namespace JwtAuth.API.Tests.Services.AuthServiceTests
 
 
             // Act
-            var sut = await _sut.Register(It.IsAny<UserRequest>());
+            var sut = await _sut.Register(It.IsAny<UserRequest>(), It.IsAny<string>());
 
             // Assert
             _tokensSet.Verify(m => m.Add(It.IsAny<AuthToken>()), Times.Once());

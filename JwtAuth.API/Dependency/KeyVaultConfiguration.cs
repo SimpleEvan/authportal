@@ -21,7 +21,7 @@ namespace JwtAuth.API.Dependency
             var client = new SecretClient(
                     new Uri($"https://{settings.KeyVaultName}.vault.azure.net/"),
                     credentials);
-
+            // TODO Add retry policy Polly
             builder.Configuration.AddAzureKeyVault(client, new AzureKeyVaultConfigurationOptions());
         }
     }

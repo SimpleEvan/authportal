@@ -1,5 +1,4 @@
-﻿using System;
-namespace JwtAuth.API.Services
+﻿namespace JwtAuth.API.Services
 {
     public class AuthPortalServiceOptions
     {
