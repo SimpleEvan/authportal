@@ -5,7 +5,7 @@
         public Guid id { get; set; } = Guid.NewGuid();
         public string Username { get; set; } = string.Empty;
         public Guid ResourceId { get; set; } = Guid.NewGuid();
-        public Resource Resource { get; set; } = new Resource();
+        public virtual Resource Resource { get; set; } = new Resource();
         public string Hash { get; set; } = null!;
         public string Salt { get; set; } = null!;
         public DateTime CreatedOn { get; } = DateTime.Now;

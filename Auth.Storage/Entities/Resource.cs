@@ -7,6 +7,6 @@ namespace Auth.Storage.Entities
         public Guid id { get; set; } = Guid.NewGuid();
         public ResourceType Type { get; set; }
         public string Description { get; set; } = string.Empty;
-        public List<AuthToken> AuthTokens { get; set; } = null!;
+        public virtual List<AuthToken> AuthTokens { get; set; } = null!;
     }
 }

@@ -19,3 +19,9 @@ Auth.Storage.Tests/obj/
 Auth.Storage.Tests/.vscode/
 
 Tooling
+
+JwtAuth.API/.DS_Store
+
+Auth.Storage/.DS_Store
+
+.DS_Store
