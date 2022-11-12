@@ -6,6 +6,14 @@ namespace Auth.Storage.Tests.Integration.DbContext
 {
     public class GetByIdCosmosDb
     {
+        public GetByIdCosmosDb()
+        {
+            //var dbName = $"AuthorPostsDb_{DateTime.Now.ToFileTimeUtc()}";
+            //dbContextOptions = new DbContextOptionsBuilder<BlogDbContext>()
+            //    .UseInMemoryDatabase(dbName)
+            //    .Options;
+        }
+
         [Fact]
         public void GetById()
         {

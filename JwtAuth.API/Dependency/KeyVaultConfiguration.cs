@@ -16,7 +16,7 @@ namespace JwtAuth.API.Dependency
     {
         public static void AddKeyVaultDependency(this WebApplicationBuilder builder)
         {
-            var settings = builder.Configuration.GetSection("KeyVaultSettings").Get<KeyVaultSettings>();
+            var settings = builder.Configuration.GetSection("KeyVaultSettings").Get<KeyVaultSettings>() ?? new KeyVaultSettings();
             var credentials = new ClientSecretCredential(settings.TenantId, settings.ClientId, settings.ClientSecret) ;
             var client = new SecretClient(
                     new Uri($"https://{settings.KeyVaultName}.vault.azure.net/"),

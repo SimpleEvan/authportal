@@ -2,7 +2,7 @@
 using JwtAuth.API.Dependency;
 using JwtAuth.API.Services;
 using JwtAuth.API.Services.Interfaces;
-using Microsoft.Extensions.Options;
+using System.Diagnostics.CodeAnalysis;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,4 +36,6 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
-    
+
+[ExcludeFromCodeCoverage]
+public partial class Program { }

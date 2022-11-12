@@ -27,7 +27,7 @@ namespace JwtAuth.API.Dependency
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration.GetSection("AuthPortalIssuerSecretKey").Value)),
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration.GetSection("AuthPortalIssuerSecretKey").Value ?? string.Empty)),
                         ValidateAudience = false,
                         ValidateIssuer = false
                     };

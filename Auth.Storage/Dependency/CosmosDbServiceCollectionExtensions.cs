@@ -20,9 +20,9 @@ namespace Auth.Storage.Dependency
         {
             services.AddDbContext<AuthContext>(
                 options => options.UseCosmos(
-                     configuration.GetSection("databaseHost").Value,
-                     configuration.GetSection("CosmosDbSettingsConnectionString").Value,
-                     configuration.GetSection("databaseName").Value));
+                     configuration.GetSection("databaseHost").Value ?? string.Empty,
+                     configuration.GetSection("CosmosDbSettingsConnectionString").Value ?? string.Empty,
+                     configuration.GetSection("databaseName").Value ?? string.Empty));
 
             return services;
         }
