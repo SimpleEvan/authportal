@@ -12,6 +12,7 @@ public class InsertCosmosDb
     {
         var token = new AuthToken()
         {
+            Username = "Username1",
             Duration = 3600,
             id = Guid.NewGuid(),
             Resource = new Resource()
