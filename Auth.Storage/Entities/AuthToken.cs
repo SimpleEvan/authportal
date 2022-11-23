@@ -8,7 +8,7 @@
         public virtual Resource Resource { get; set; } = new Resource();
         public string Hash { get; set; } = null!;
         public string Salt { get; set; } = null!;
-        public DateTime CreatedOn { get; } = DateTime.Now;
+        public DateTime CreatedOn { get; set; } = DateTime.Now;
         public int Duration { get; set; }
         public RefreshToken RefreshToken { get; set; } = new RefreshToken();
     }

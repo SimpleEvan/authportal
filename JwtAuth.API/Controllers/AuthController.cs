@@ -21,7 +21,7 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("refreshToken")]
-    public async Task<ActionResult> RefreshToken(string userName)
+    public async Task<ActionResult> RefreshToken(string username)
     {
         var refreshCookie = Request.Cookies["refreshToken"];
 
@@ -30,7 +30,7 @@ public class AuthController : ControllerBase
             return BadRequest("Invalid refresh login!");
         }
 
-        var token = await _authService.RecycleRefreshToken(userName, refreshCookie);
+        var token = await _authService.RecycleRefreshToken(username, refreshCookie);
 
         if (token.RefreshToken == string.Empty)
         {
@@ -55,7 +55,7 @@ public class AuthController : ControllerBase
     }
 
     [HttpGet("logout")]
-    public async Task<ActionResult<UserLogoutResponse>> Logout(string userName)
+    public async Task<ActionResult<UserLogoutResponse>> Logout(string username)
     {
         var refreshCookie = Request.Cookies["refreshToken"];
 
@@ -64,7 +64,7 @@ public class AuthController : ControllerBase
             return BadRequest("Invalid logout!");
         }
 
-        var logout = await _authService.Logout(userName, refreshCookie);
+        var logout = await _authService.Logout(username, refreshCookie);
 
         if (string.IsNullOrEmpty(logout.Message))
         {
@@ -84,4 +84,4 @@ public class AuthController : ControllerBase
 
         Response.Cookies.Append("refreshToken", refreshToken, options);
     }
-}       
+}

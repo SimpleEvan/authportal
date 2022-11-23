@@ -25,3 +25,5 @@ JwtAuth.API/.DS_Store
 Auth.Storage/.DS_Store
 
 .DS_Store
+
+JwtAuth.API/Logs/

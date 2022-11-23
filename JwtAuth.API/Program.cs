@@ -2,40 +2,76 @@
 using JwtAuth.API.Dependency;
 using JwtAuth.API.Services;
 using JwtAuth.API.Services.Interfaces;
+using Serilog;
+using Serilog.Events;
 using System.Diagnostics.CodeAnalysis;
 
-var builder = WebApplication.CreateBuilder(args);
 
-builder.AddKeyVaultDependency();
+Log.Logger = new LoggerConfiguration()
+            .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+            .Enrich.FromLogContext()
+            .WriteTo.Console()
+            .CreateBootstrapLogger();
 
-builder.Services.AddControllers();
-builder.Services.AddRouting(options => options.LowercaseUrls = true);
-builder.Services.AddEndpointsApiExplorer();
-
-builder.Services.AddSwaggerDependency(builder.Configuration);
-builder.Services.AddCosmosDbDependency(builder.Configuration);
-
-builder.Services.AddScoped<IAuthPortalService, AuthPortalService>();
-
-builder.Services.Configure<AuthPortalServiceOptions>(options =>
-    options.IssuerSecretKey = builder.Configuration.GetSection("AuthPortalIssuerSecretKey").Value ?? string.Empty);
-
-var app = builder.Build();
-
-if (app.Environment.IsDevelopment())
+try
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    Log.Information("The webHost is starting");
+    var builder = WebApplication.CreateBuilder(args);
+
+    builder.AddKeyVaultDependency();
+
+    SerilogSettings.AddApplicationInsightConfiguration(builder.Configuration);
+
+    builder.Host.UseSerilog((context, services, configuration) => configuration
+        .ReadFrom.Configuration(context.Configuration)
+        .ReadFrom.Services(services)
+        .Enrich.FromLogContext());
+
+    builder.Services.AddControllers();
+    builder.Services.AddRouting(options => options.LowercaseUrls = true);
+    builder.Services.AddEndpointsApiExplorer();
+
+    builder.Services.AddSwaggerDependency(builder.Configuration);
+    builder.Services.AddCosmosDbDependency(builder.Configuration);
+
+    builder.Services.AddScoped<IAuthPortalService, AuthPortalService>();
+
+    builder.Services.Configure<AuthPortalServiceOptions>(options =>
+        options.IssuerSecretKey = builder.Configuration.GetSection("AuthPortalIssuerSecretKey").Value ?? string.Empty);
+
+    var app = builder.Build();
+
+    app.UseSerilogRequestLogging(configure =>
+    {
+        configure.MessageTemplate = "HTTP {RequestMethod} {RequestPath} responded {StatusCode} in {Elapsed:0.0000}ms";
+    });
+
+    if (app.Environment.IsDevelopment())
+    {
+        app.UseSwagger();
+        app.UseSwaggerUI();
+    }
+
+    app.UseHttpsRedirection();
+
+    app.UseAuthentication();
+    app.UseAuthorization();
+
+    app.MapControllers();
+
+    app.MapGet("/api/health", () => $"health check is OK: {DateTime.Now.ToString("ddd, dd MMM yyy HH':'mm':'ss 'GMT'")}");
+
+    app.Run();
+}
+catch (Exception ex) 
+{
+    Log.Fatal($"Fatal startup error: {ex.Message}");
+}
+finally    
+{
+    Log.CloseAndFlush();
 }
 
-app.UseHttpsRedirection();
-
-app.UseAuthentication();
-app.UseAuthorization();
-
-app.MapControllers();
-
-app.Run();
 
 [ExcludeFromCodeCoverage]
 public partial class Program { }

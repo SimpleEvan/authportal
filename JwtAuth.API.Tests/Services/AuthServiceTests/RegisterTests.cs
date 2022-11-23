@@ -48,7 +48,7 @@ namespace JwtAuth.API.Tests.Services.AuthServiceTests
             }, accessToken);
 
             // Assert
-            Assert.Equal(string.Empty, sut.UserName);
+            Assert.Equal(string.Empty, sut.Username);
         }
 
         //[Fact]

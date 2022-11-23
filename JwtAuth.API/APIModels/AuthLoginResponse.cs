@@ -1,5 +1,4 @@
-﻿using System;
-namespace JwtAuth.API.APIModels
+﻿namespace JwtAuth.API.APIModels
 {
 	public class AuthLoginResponse
 	{

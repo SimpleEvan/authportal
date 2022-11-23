@@ -1,9 +1,9 @@
-﻿namespace JwtAuth.API.APIModels
+namespace JwtAuth.API.APIModels
 {
     public class AuthTokenResponse
     {
-        public string UserName { get; set; } = String.Empty;
-        public DateTime CreatedOn { get; }
+        public string Username { get; set; } = String.Empty;
+        public DateTime CreatedOn { get; set; } = DateTime.Now;
         public DateTime ExpiresAt { get; set; } = DateTime.MinValue;
         public int Duration { get; set; }
     }

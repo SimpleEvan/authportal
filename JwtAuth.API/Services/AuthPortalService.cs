@@ -60,7 +60,7 @@ namespace JwtAuth.API.Services
 
                 return new AuthTokenResponse
                 {
-                    UserName = userRequest.Username,
+                    Username = userRequest.Username,
                     ExpiresAt = DateTime.Now.AddSeconds(3600),
                     Duration = 3600
                 };

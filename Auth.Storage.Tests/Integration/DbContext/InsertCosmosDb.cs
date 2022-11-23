@@ -2,6 +2,7 @@
 using Auth.Storage.Entities;
 using Auth.Storage.Enums;
 using Auth.Storage.Tests.Configuration;
+using Auth.Storage.Tests.Configuration.Enum;
 
 namespace Auth.Storage.Tests.Integration.DbContext;
 
@@ -25,7 +26,7 @@ public class InsertCosmosDb
 
         try
         {
-            using (var context = new AuthContext(CosmosDbConfig.GetOptionsAuthContext()))
+            using (var context = new AuthContext(CosmosDbConfig.GetOptionsAuthContext(DatabaseType.InMemoryDb)))
             {
                 context.Add<AuthToken>(token);
                 await context.SaveChangesAsync();
