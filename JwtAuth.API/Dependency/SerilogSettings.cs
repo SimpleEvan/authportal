@@ -1,4 +1,6 @@
 ﻿
+using System.Text.RegularExpressions;
+
 namespace JwtAuth.API.Dependency
 {
     public class WriteTo
@@ -27,7 +29,16 @@ namespace JwtAuth.API.Dependency
                 var serilogSettings = configuration.GetSection("Serilog").Get<SerilogOptions>() ?? new SerilogOptions();
                 var appSettingConnectionStringForAI = serilogSettings.WriteTo.SingleOrDefault(el => el.Name == "ApplicationInsights")?.Args.FirstOrDefault();
 
-                //#TODO update value
+                if (string.IsNullOrEmpty(appSettingConnectionStringForAI))
+                {
+                    // #TODO find a better solution to update
+                    var appSettingsPath = Path.Combine(System.IO.Directory.GetCurrentDirectory(), "appsettings.Development.json");
+
+                    var json = File.ReadAllText(appSettingsPath);
+                    json = json.Replace("\"connectionString\": \"\"", $"\"connectionString\": \"{keyVaultAppInsightConnectionString}\"");
+
+                    File.WriteAllText(appSettingsPath, json);
+                }
             }
         }
     }
