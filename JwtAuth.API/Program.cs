@@ -12,7 +12,6 @@ Log.Logger = new LoggerConfiguration()
             .Enrich.FromLogContext()
             .WriteTo.Console()
             .CreateBootstrapLogger();
-
 try
 {
     Log.Information("The webHost is starting");
@@ -39,9 +38,14 @@ try
     builder.Services.Configure<AuthPortalServiceOptions>(options =>
         options.IssuerSecretKey = builder.Configuration.GetSection("AuthPortalIssuerSecretKey").Value ?? string.Empty);
 
+    builder.Services.AddCors(options => options.AddPolicy(name: "localTesting", policy =>
+    {
+        policy.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader();
+    }));
+
     var app = builder.Build();
 
-    app.UseSerilogRequestLogging(configure =>
+    app.UseSerilogRequestLogging(configure =>   
     {
         configure.MessageTemplate = "HTTP {RequestMethod} {RequestPath} responded {StatusCode} in {Elapsed:0.0000}ms";
     });
@@ -50,6 +54,7 @@ try
     {
         app.UseSwagger();
         app.UseSwaggerUI();
+        app.UseCors("localTesting");
     }
 
     app.UseHttpsRedirection();

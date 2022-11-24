@@ -1,6 +1,8 @@
 ﻿using Azure.Extensions.AspNetCore.Configuration.Secrets;
 using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
+using Polly;
+using Serilog;
 
 namespace JwtAuth.API.Dependency
 {
@@ -16,13 +18,24 @@ namespace JwtAuth.API.Dependency
     {
         public static void AddKeyVaultDependency(this WebApplicationBuilder builder)
         {
-            var settings = builder.Configuration.GetSection("KeyVaultSettings").Get<KeyVaultSettings>() ?? new KeyVaultSettings();
-            var credentials = new ClientSecretCredential(settings.TenantId, settings.ClientId, settings.ClientSecret) ;
-            var client = new SecretClient(
+            var MAX_RETRIES = 3;
+            var retryPolicy = Policy.Handle<Exception>()
+                .WaitAndRetry(retryCount: MAX_RETRIES, sleepDurationProvider: (attemptCount) => TimeSpan.FromSeconds(attemptCount * 2),
+                onRetry: (exception, sleepDuration, attemptNumber, context) =>
+                {
+                    Log.Error($"Keyvault error: {exception.Message} Retrying in {sleepDuration}. {attemptNumber} / {MAX_RETRIES} attempts.");
+                });
+
+            retryPolicy.Execute(() =>
+            {
+                var settings = builder.Configuration.GetSection("KeyVaultSettings").Get<KeyVaultSettings>() ?? new KeyVaultSettings();
+                var credentials = new ClientSecretCredential(settings.TenantId, settings.ClientId, settings.ClientSecret) ;
+                var client = new SecretClient(
                     new Uri($"https://{settings.KeyVaultName}.vault.azure.net/"),
                     credentials);
-            // TODO Add retry policy Polly
-            builder.Configuration.AddAzureKeyVault(client, new AzureKeyVaultConfigurationOptions());
+            
+                builder.Configuration.AddAzureKeyVault(client, new AzureKeyVaultConfigurationOptions());
+            });
         }
     }
 }
