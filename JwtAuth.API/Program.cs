@@ -1,9 +1,13 @@
 ﻿using Auth.Storage.Dependency;
+using FluentValidation;
+using JwtAuth.API.APIModels;
 using JwtAuth.API.Dependency;
 using JwtAuth.API.Services;
 using JwtAuth.API.Services.Interfaces;
+using JwtAuth.API.Validation;
 using Serilog;
 using Serilog.Events;
+using System;
 using System.Diagnostics.CodeAnalysis;
 
 
@@ -25,6 +29,9 @@ try
         .ReadFrom.Configuration(context.Configuration)
         .ReadFrom.Services(services)
         .Enrich.FromLogContext());
+
+    builder.Services.AddScoped<IValidator<UserRequest>, UserRegistrationValidator>();
+    builder.Services.AddScoped<IValidator<string>, UsernameValidator>();
 
     builder.Services.AddControllers();
     builder.Services.AddRouting(options => options.LowercaseUrls = true);

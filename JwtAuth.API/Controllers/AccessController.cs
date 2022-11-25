@@ -1,4 +1,6 @@
-﻿using JwtAuth.API.APIModels;
+﻿using FluentValidation;
+using System;
+using JwtAuth.API.APIModels;
 using JwtAuth.API.Authorization;
 using JwtAuth.API.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -13,11 +15,13 @@ namespace JwtAuth.API.Controllers
     public class AccessController: ControllerBase
     {
         private readonly IAuthPortalService _authService;
+        private readonly IValidator<UserRequest> _validator;
         private readonly ILogger<AccessController> _logger;
 
-        public AccessController(IAuthPortalService authService, ILogger<AccessController> logger)
+        public AccessController(IAuthPortalService authService, IValidator<UserRequest> validator, ILogger<AccessController> logger)
 		{
             _logger = logger;
+            _validator = validator;
             _authService = authService;
         }
 
@@ -26,6 +30,13 @@ namespace JwtAuth.API.Controllers
         {
             using (Operation.Time("Register user: ", user.Username))
             {
+                var validation = await _validator.ValidateAsync(user);
+
+                if (!validation.IsValid)
+                {
+                    return BadRequest($"Invalid registration request: {string.Join(' ', validation.Errors.ToList())}");
+                }
+
                 var bearerToken = Request.Headers.Authorization.FirstOrDefault();
 
                 if (string.IsNullOrEmpty(bearerToken))

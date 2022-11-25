@@ -29,10 +29,12 @@
     <None Remove="Moq" />
     <None Remove="TestData\" />
     <None Remove="Microsoft.EntityFrameworkCore" />
+    <None Remove="Validators\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Services\" />
     <Folder Include="TestData\" />
+    <Folder Include="Validators\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\JwtAuth.API\JwtAuth.API.csproj" />

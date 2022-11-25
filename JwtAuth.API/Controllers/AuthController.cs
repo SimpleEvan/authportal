@@ -1,6 +1,8 @@
-﻿using JwtAuth.API.APIModels;
+﻿using FluentValidation;
+using JwtAuth.API.APIModels;
 using JwtAuth.API.Authorization;
 using JwtAuth.API.Services.Interfaces;
+using JwtAuth.API.Validation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,16 +15,27 @@ public class AuthController : ControllerBase
 {
     private readonly IAuthPortalService _authService;
     private readonly ILogger<AuthController> _logger;
+    private readonly IValidator<UserRequest> _loginValidator;
+    private readonly IValidator<string> _userNamevalidator;
 
-    public AuthController(IAuthPortalService authService, ILogger<AuthController> logger)
+    public AuthController(IAuthPortalService authService, IValidator<string> userNamevalidator, IValidator<UserRequest> loginValidator, ILogger<AuthController> logger)
     {
         _logger = logger;
+        _loginValidator = loginValidator;
+        _userNamevalidator = userNamevalidator;
         _authService = authService;
     }
 
     [HttpPost("refreshToken")]
     public async Task<ActionResult> RefreshToken(string username)
     {
+        var validation = await _userNamevalidator.ValidateAsync(username);
+
+        if (!validation.IsValid)
+        {
+            return BadRequest($"Invalid username: {string.Join(' ', validation.Errors.ToList())}");
+        }
+
         var refreshCookie = Request.Cookies["refreshToken"];
 
         if (string.IsNullOrEmpty(refreshCookie))
@@ -44,6 +57,13 @@ public class AuthController : ControllerBase
     [HttpPost("login")]
     public async Task<ActionResult<string>> Login(UserRequest user)
     {
+        var validation = await _loginValidator.ValidateAsync(user);
+
+        if (!validation.IsValid)
+        {
+            return BadRequest($"Invalid login request: {string.Join(' ', validation.Errors.ToList())}");
+        }
+
         var token = await _authService.Login(user);
 
         if (token.JwtToken == string.Empty)
@@ -57,6 +77,13 @@ public class AuthController : ControllerBase
     [HttpGet("logout")]
     public async Task<ActionResult<UserLogoutResponse>> Logout(string username)
     {
+        var validation = await _userNamevalidator.ValidateAsync(username);
+
+        if (!validation.IsValid)
+        {
+            return BadRequest($"Invalid username: {string.Join(' ', validation.Errors.ToList())}");
+        }
+
         var refreshCookie = Request.Cookies["refreshToken"];
 
         if (string.IsNullOrEmpty(refreshCookie))

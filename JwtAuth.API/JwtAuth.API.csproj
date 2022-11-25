@@ -21,6 +21,7 @@
     <PackageReference Include="Azure.Identity" Version="1.8.0" />
     <PackageReference Include="Azure.Extensions.AspNetCore.Configuration.Secrets" Version="1.2.2" />
     <PackageReference Include="Polly" Version="7.2.3" />
+    <PackageReference Include="FluentValidation" Version="11.4.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -37,12 +38,15 @@
     <None Remove="Azure.Identity" />
     <None Remove="Azure.Extensions.AspNetCore.Configuration.Secrets" />
     <None Remove="Polly" />
+    <None Remove="Validation\" />
+    <None Remove="FluentValidation" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="APIModels\" />
     <Folder Include="Services\" />
     <Folder Include="Services\Interfaces\" />
     <Folder Include="Authorization\" />
+    <Folder Include="Validation\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Auth.Storage\Auth.Storage.csproj">
